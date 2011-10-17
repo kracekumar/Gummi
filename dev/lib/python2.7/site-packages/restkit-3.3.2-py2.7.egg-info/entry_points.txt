@@ -1,0 +1,5 @@
+[paste.app_factory]
+couchdb_proxy = restkit.contrib.wsgi_proxy:make_couchdb_proxy
+host_proxy = restkit.contrib.wsgi_proxy:make_host_proxy
+proxy = restkit.contrib.wsgi_proxy:make_proxy
+

@@ -1,0 +1,17 @@
+Metadata-Version: 1.0
+Name: rtjp-eventlet
+Version: 0.3.2
+Summary: UNKNOWN
+Home-page: UNKNOWN
+Author: Michael Carter
+Author-email: CarterMichael@gmail.com
+License: MIT License
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

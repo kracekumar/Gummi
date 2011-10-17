@@ -1,0 +1,85 @@
+ul.menu{
+    font-family: arial, sans-serif;
+    font-size: 100%;
+    background: #666;
+    color: #fff;
+    }
+
+ul.menu, li.menu_item{
+    list-style: none;
+    }
+
+ul.menu{
+    overflow: hidden;
+    }
+
+ul.menu li.menu_item a.menu{
+    text-decoration: none;
+    color: #000;
+    background: #ffc;
+    display: block;
+    height: 3em;
+    width: 10em;
+    padding: 1em;
+    /* firefox */
+    -moz-box-shadow: 5px 5px 7px rgba(33, 33, 33, 1);
+    /* safari+chrome */
+    -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, 7);
+    /* Opera */
+    box-shadow: 5px 5px 7px rgba(33, 33, 33, 7);
+    -webkit-transform: rotate(-6deg);
+    -o-transform: rotate(-6deg);
+    -moz-transform: rotate(-6deg);
+    -moz-transition: -moz-transform .15s linear;
+    -o-transition: -o-transform .15s linear;
+    -webkit-transition: -webkit-transform .15s linear;
+    }
+ul.menu li.menu_item:nth-child(even) a.menu{
+    -o-transform:rotate(4deg);
+    -webkit-transform:rotate(4deg);
+    -moz-transform:rotate(4deg);
+    position:realative;
+    top: 5px;
+    background: #cfc;
+    }
+ul.menu li.menu_item:nth-child(3n) a.menu{
+    -o-transform:rotate(-3deg);
+    -webkit-transform:rotate(-3deg);
+    -moz-transform:rotate(-3deg);
+    position:realative;
+    top: 5px;
+    background: #ccf;
+    }
+
+
+ul.menu li.menu_item:nth-child(5n) a.menu{
+    -o-transform:rotate(5deg);
+    -webkit-transform:rotate(5deg);
+    -moz-transform:rotate(5deg);
+    position:realative;
+    top: 5px;
+    }
+
+ul.menu li.menu_item a.menu:hover, ul.menu li.menu_item a.menu:focus{
+    -moz-box-shadow: 10px 10px 7px rgba(0, 0, 0, 7);
+    -webkit-box-shadow: 10px 10px 7px rgba(0, 0, 0, 7);
+    box-shadow: 10px 10px 7px rgba(0, 0, 0, 7);
+    -webkit-transform: scale(1.25);
+    -moz-transform: scale(1.25);
+    -o-transform: scale(1.25);
+    position: relative;
+    z-index: 5;
+}
+
+
+ul.menu li.menu_item{
+    margin: 1em;
+    float: left;
+    font-size: 140%
+    font-weight: bold;
+    padding-bottom: 10px;
+    font-family: "Rennie Beanie", arial, sans-serif;
+
+    }
+
+

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename = 'hookbox.js') }}" 
+            type='text/javascript'></script>
+    <script type="text/javascript">
+        $(function(){
+            function addHistory(msg) {
+                $('#hookbox-output').prepend('<p>' + msg +'</p>');
+                }
+            $('send-chat').clickfunction(e){
+                var chatInput = $('chat-input');
+                conn.publish('testing', chatInput.val());
+                return false;
+                });
+
+            //connecting to hookbox server, running on port 8001
+            conn = hookbox.connect('http://127.0.0.1:8001/');
+
+            //publish
+            conn.onSubscribed = function(channel_name, subscription){
+                subscription.onPublish = function(frame){
+                    addHistory(frame.user+ ':' + frame.payload);
+                    };
+                }
+
+                conn.subscribe('testing');
+                });
+        </script>
+        {% endblock %}
+
+        {% block body %}
+            <div id ="hookbox-output">
+            </div>
+            <h2> Chat Home</h2>
+            <form method ="POST" action="">
+                <textarea id ="chat-input">Type Here</textarea>
+                <input type ="submit" value = "Send" id="send-chat" \
+                 onclick ="doChat();" />
+            </form>
+        {% endblock %}

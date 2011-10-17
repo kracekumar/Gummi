@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <title> Gummi - A multi User Chat client by Kracekumar |
+        {% block title %}
+        {% endblock %}
+        </title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}"
+              rel="stylesheet">
+        <link href="{{ url_for('static', filename='stylesheet.css') }}"
+              rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular"
+        rel="stylesheet" type="text/css">
+        {% block scripts %}{% endblock %}
+    </head>
+    <body>
+    <nav>
+        {% block menu %}{% endblock %}
+    </nav>
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    <article>
+        {% block content %}{% endblock %}
+    </article>
+    </body>
+</html>
+

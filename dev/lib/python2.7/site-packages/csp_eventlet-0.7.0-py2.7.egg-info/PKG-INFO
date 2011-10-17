@@ -1,0 +1,17 @@
+Metadata-Version: 1.0
+Name: csp-eventlet
+Version: 0.7.0
+Summary: An implemention of the Comet Session protocol specification for eventlet: http://orbited.org/blog/files/cps.html
+Home-page: http://github.com/mcarter/csp_eventlet
+Author: Michael Carter
+Author-email: CarterMichael@gmail.com
+License: MIT License
+Description: This csp implementation provides a socket object that allows you to use existing eventlet network code, but listen for csp connections in addition to tcp/ip.
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

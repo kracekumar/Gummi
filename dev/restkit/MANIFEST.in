@@ -1,0 +1,13 @@
+include NOTICE
+include LICENSE
+include README.rst
+include TODO.txt
+include THANKS
+include requirements.txt
+include bootstrap.py
+include buildout.cfg
+recursive-include debian *
+recursive-include examples *
+recursive-include tests *
+recursive-include doc *
+recursive-include scripts *
