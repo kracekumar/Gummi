@@ -2,7 +2,8 @@
 {% block menu %}
     <ul class="menu">
         <li class="menu_item"><a class="menu" href="index.html">Home</a></li>
-        <li class="menu_item"><a class="menu" href="chatroom.html">Chat Room
+        <li class="menu_item"><a class="menu" href="{{ url_for('chat') }}">
+        Chat Room
         </a></li>
         <li class="menu_item"><a class="menu" href="logout.html">Log Out</a></li>
     </ul>

@@ -82,4 +82,15 @@ ul.menu li.menu_item{
 
     }
 
-
+.text
+{
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.3em;
+    color: #666;
+}
+p
+{
+    display: block;
+    text-align: center;
+}

@@ -13,17 +13,21 @@
 <script src="{{ url_for('static', filename='onEnter.js') }}"
  type= "text/javascript"> </script>
 <script>
+function process_text(text)
+{
+            $('aside.chat_content').append("<p class=message>" + text + "</p>");
+            $('form#chat_message').clearForm();
+    
+}
 function t(e)
 {
             var value = $("textarea.message").val();
-            $('aside.chat_content').append("<p clas=message>" + value + "</p>");
-            $('form#chat_message').clearForm();
+            process_text(value);
 }
     $(document).ready(function t(e){
         $('form#chat_message').ajaxForm(function() {
             var value = $("textarea.message").val();
-            $('aside.chat_content').append("<p clas=message>" + value + "</p>");
-            $('form#chat_message').clearForm();
+            process_text(value);
             });
             });
 </script>
