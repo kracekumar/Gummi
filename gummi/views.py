@@ -18,6 +18,7 @@ facebook = oauth.remote_app('facebook',
     request_token_params={'scope': 'email'}
     )
 
+
 def get_user_name():
     return session['user_name'] if session.has_key('user_name') else None
 
@@ -31,12 +32,16 @@ def chat():
 
 @app.route('/chatroom/<name>/', methods = ['POST', 'GET'])
 def chatroom(name):
-    return render_template('chatroom.html')
+    if get_user_name():
+        return render_template('chatroom.html')
+    else:
+        session['redirect_url'] = request.url
+        return redirect(url_for('login'))
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     return facebook.authorize(callback=url_for('facebook_authorized',
-           next=request.args.get('next') or request.referrer or None,
+           next=session['redirect_url'] or None,
            _external=True))
 
 @app.route('/login/authorized')
