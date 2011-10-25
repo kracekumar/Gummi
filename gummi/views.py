@@ -20,6 +20,7 @@ facebook = oauth.remote_app('facebook',
 
 
 def get_user_name():
+    """ Fetch the logged in User"""
     return session['user_name'] if session.has_key('user_name') else None
 
 @app.route('/')
@@ -32,6 +33,7 @@ def chat():
 
 @app.route('/chatroom/<name>/', methods = ['POST', 'GET'])
 def chatroom(name):
+    """ Actual chat room handling function but not complete """
     if get_user_name():
         return render_template('chatroom.html')
     else:
@@ -40,6 +42,7 @@ def chatroom(name):
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
+    """ Facebook Login"""
     return facebook.authorize(callback=url_for('facebook_authorized',
            next=session['redirect_url'] or None,
            _external=True))
@@ -64,4 +67,5 @@ def get_facebook_oauth_token():
 
 @app.route('/login/welcome/')
 def welcome():
+    """ Welcome page after login, it is here for test """ 
     return session['user_name'] 
