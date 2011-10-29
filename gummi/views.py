@@ -1,7 +1,7 @@
-import json
 from gummi import app
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session, flash
 from flaskext.oauth import OAuth
+from forms import RegisterChatRoom
 
 FACEBOOK_APP_ID = "111665765610828"
 FACEBOOK_APP_SECRET = "bb3f445f1a832bd24ba0a9bf2a0f5d63"
@@ -57,6 +57,7 @@ def facebook_authorized(resp):
     session['oauth_token'] = (resp['access_token'], '')
     me = facebook.get('/me')
     session['user_name'] = me.data['name']
+    raise 
     return redirect(url_for('welcome'))
     return 'Logged in as id=%s name=%s redirect=%s' %\
            (me.data['id'], me.data['name'], request.args.get('next'))
@@ -69,3 +70,10 @@ def get_facebook_oauth_token():
 def welcome():
     """ Welcome page after login, it is here for test """ 
     return session['user_name'] 
+
+@app.route('/chatroom/register/', methods = ['POST', 'GET'])
+def register():
+    form = RegisterChatRoom(request.form)
+    if request.method == 'POST' and form.validate():
+        return render_template('register.html', form=form)
+    return render_template('register.html', form=form)

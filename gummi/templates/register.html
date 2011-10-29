@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% from "_formfieldhelpers.html" import input, button, tag %}
+{% block title %}
+    Register or Join a Chat Room
+{% endblock %}
+{% block header %}
+   Create a Chat Room or join one. 
+{% endblock %}
+{% block content %}
+<section class="new_chatroom">
+   <form method="post" action="/chatroom/register/" >
+        <fieldset>
+            <legend> <b> Create a New Chat Room </b> </legend>
+            {{ input(name="chatroom_name", class="textbox", type="text", size=100, 
+               value="Enter Chat Room Name greater than 5 characters") }}
+               <br/>
+               <br/>
+               <br/>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="error_message">
+                       {% for message in messages %}
+                           <li> {{ message }} </li>
+                        {% endfor %}
+                    </ul> 
+                {% endif %}
+            {% endwith %}
+            {% if form.errors %}
+                {% for field in form.errors %}
+                    {% set error_message = form.errors[field] %}
+                    {{tag(name="ul", class="error_message", 
+                      value=error_message )}}
+                {% endfor %}
+            {% endif %}
+            {{ input(name="create_chat_room_button", type="submit",
+               class="button", value="Create")}}
+        </fieldset>
+   </form>
+</section>
+{% endblock %}

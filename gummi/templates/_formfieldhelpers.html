@@ -1,0 +1,12 @@
+{% macro input(name, class, type = 'text', size = 50, value) %}
+    <input type = "{{ type }}" class ="{{ class }}" name = "{{ name }}"\
+    type = "{{ type }}" size = "{{ size }}" value="{{ value }}" />
+{% endmacro %}
+{% macro button(name, class, value) %}
+    <button  class ="{{ class }}" name = "{{ name }}"> {{value}} </button>
+{% endmacro %}
+{% macro tag(name, class, value) %}
+    <{{name}} class="{{class}}">{{ value }} </{{name}}>
+{% endmacro %}
+
+
