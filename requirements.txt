@@ -1,0 +1,5 @@
+Flask >= 0.8
+Flask-sqlalchemy
+Flask-testing
+wtforms
+Flask-oauth
