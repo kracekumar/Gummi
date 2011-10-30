@@ -1,9 +1,0 @@
-#!/home/kracekumar/codes/python/flask/sandbox/gummi/dev/bin/python
-# EASY-INSTALL-ENTRY-SCRIPT: 'hookbox==0.3.4dev','console_scripts','hookbox'
-__requires__ = 'hookbox==0.3.4dev'
-import sys
-from pkg_resources import load_entry_point
-
-sys.exit(
-   load_entry_point('hookbox==0.3.4dev', 'console_scripts', 'hookbox')()
-)
