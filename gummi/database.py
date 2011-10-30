@@ -1,6 +1,6 @@
-from core  import app
 from flaskext.sqlalchemy import SQLAlchemy
 from datetime import datetime
+from gummi import app
 
 db = SQLAlchemy(app)
 
@@ -30,7 +30,7 @@ class ChatRoom(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_datetime = db.Column(db.DateTime)
     user = db.relationship('User', \
-                backref = db.backref('chatrooms', lazy='dynamic'))
+                backref = db.backref('chat_rooms', lazy='dynamic'))
 
     def __init__(self, name, user, created_datetime=None):
         self.name = name
@@ -51,14 +51,14 @@ class ChatMessage(db.Model):
      """
      id = db.Column(db.Integer, primary_key = True )
      user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-     chatroom_id = db.Column(db.Integer, db.ForeignKey('chatroom.id'))
+     chatroom_id = db.Column(db.Integer, db.ForeignKey('chat_room.id'))
      message = db.Column(db.Text)
      datetime = db.Column(db.DateTime)
 
      user = db.relationship('User',\
-                 backref = db.backref('users', lazy='dynamic'))
+                 backref = db.backref('chat_messages', lazy='dynamic'))
      chatroom = db.relationship('ChatRoom', \
-                     backref = db.backref('chatrooms', lazy='dynamic'))
+                     backref = db.backref('chat_messages', lazy='dynamic'))
 
      def __init__(self, user_id, chatroom_id, message):
          self.user_id = user_id
