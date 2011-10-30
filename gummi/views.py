@@ -2,6 +2,7 @@ from gummi import app
 from flask import render_template, request, redirect, url_for, session, flash
 from flaskext.oauth import OAuth
 from forms import RegisterChatRoom
+from database import User, ChatRoom, ChatMessage, db
 
 FACEBOOK_APP_ID = "111665765610828"
 FACEBOOK_APP_SECRET = "bb3f445f1a832bd24ba0a9bf2a0f5d63"
@@ -43,8 +44,16 @@ def chatroom(name):
 def login():
     """ Facebook Login"""
     return facebook.authorize(callback=url_for('facebook_authorized',
-           next=session['redirect_url'] or None,
+           next=None,
            _external=True))
+
+def check_user(email):
+    return True if User.query.filter_by(email = email).first() else False
+
+def add_user(user_name, email, gender):
+    user = User(user_name, email, gender)
+    db.session.add(user)
+    db.session.commit()
 
 @app.route('/login/authorized')
 @facebook.authorized_handler
@@ -56,10 +65,15 @@ def facebook_authorized(resp):
     session['oauth_token'] = (resp['access_token'], '')
     me = facebook.get('/me')
     session['user_name'] = me.data['name']
-    raise 
-    return redirect(url_for('welcome'))
-    return 'Logged in as id=%s name=%s redirect=%s' %\
-           (me.data['id'], me.data['name'], request.args.get('next'))
+    email = me.data['email']
+    gender = me.data['gender']
+
+    if not check_user(email):
+        add_user(session['user_name'], email, gender) 
+
+#    return redirect(url_for('welcome'))
+    return 'Logged in as email=%s name=%s gender=%s, added to db =%s' %\
+           (email, session['user_name'], gender, check_user(email))
 
 @facebook.tokengetter
 def get_facebook_oauth_token():
