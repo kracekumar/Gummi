@@ -1,4 +1,4 @@
-from gummi  import app
+from core  import app
 from flaskext.sqlalchemy import SQLAlchemy
 from datetime import datetime
 

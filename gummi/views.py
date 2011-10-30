@@ -1,4 +1,4 @@
-from gummi import app
+from gummi import create_app
 from flask import render_template, request, redirect, url_for, session, flash
 from flaskext.oauth import OAuth
 from forms import RegisterChatRoom
@@ -18,7 +18,7 @@ facebook = oauth.remote_app('facebook',
     request_token_params={'scope': 'email'}
     )
 
-
+app = create_app('gummi')
 def get_user_name():
     """ Fetch the logged in User"""
     return session['user_name'] if session.has_key('user_name') else None
