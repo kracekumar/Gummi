@@ -333,6 +333,7 @@ p.message
     
     font-family: monospace;
     color: #262626;
+    text-align: left;
 }
 aside.chat_content{
     width: 75%;

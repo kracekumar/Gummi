@@ -211,3 +211,15 @@ tr.head
     font-size: 28px;
     color: #232323; 
 }
+p.message
+{
+    font-weight: bold;
+    font-size: 16px;
+    text-align: 1.3em;
+    font-family: monospace;
+}
+img
+{
+    height: 25px;
+    width: 25px;
+    }
