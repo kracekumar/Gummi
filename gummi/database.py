@@ -16,7 +16,7 @@ class User(db.Model):
         self.email = email
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r %r >' % (self.username, self.id)
 
 
 class ChatRoom(db.Model):
@@ -34,13 +34,14 @@ class ChatRoom(db.Model):
 
     def __init__(self, name, user, created_datetime=None):
         self.name = name
-        self.user = user
+        self.creator_id = user
         if created_datetime is None:
             created_datetime = datetime.utcnow()
         self.created_datetime = created_datetime
 
     def __repr__(self):
-        return '<ChatRoom %r>' % self.name
+        return '<ChatRoom %r %r %r>' % (self.name, self.creator_id, \
+                                                self.created_datetime)
 
 
 class ChatMessage(db.Model):

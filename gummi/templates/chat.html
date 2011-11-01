@@ -12,6 +12,10 @@
  type= "text/javascript"> </script>
 <script src="{{ url_for('static', filename='onEnter.js') }}"
  type= "text/javascript"> </script>
+
+<script src="{{ url_for('static', filename='jquery.mb.emoticons.js') }}"
+type="text/javascript">
+</script>
 <script>
 function process_text(text)
 {
@@ -33,7 +37,7 @@ function t(e)
 </script>
 {% endblock %}
 <section class="chat">
-{% block header %}
+{% block heaer %}
     <h3 class="header">You are Chatting With 
    {% if members %}
         {% for member in members %}
@@ -54,8 +58,7 @@ function t(e)
 <section>
     <article class="message">
         <form method="post" action="" id="chat_message">
-            <textarea name="message" class ="message" onenter="t(e)" \>
-            
+            <textarea name="message" class ="message" onenter="t(e)" > 
             </textarea>
         </form>
     </article>

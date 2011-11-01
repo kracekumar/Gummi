@@ -44,16 +44,9 @@ def chatroom(name):
 def login():
     """ Facebook Login"""
     return facebook.authorize(callback=url_for('facebook_authorized',
-           next=None,
+           next=None or request.args['next'],
            _external=True))
 
-def check_user(email):
-    return True if User.query.filter_by(email = email).first() else False
-
-def add_user(user_name, email, gender):
-    user = User(user_name, email, gender)
-    db.session.add(user)
-    db.session.commit()
 
 @app.route('/login/authorized')
 @facebook.authorized_handler
@@ -65,13 +58,14 @@ def facebook_authorized(resp):
     session['oauth_token'] = (resp['access_token'], '')
     me = facebook.get('/me')
     session['user_name'] = me.data['name']
+    session['email'] = me.data['email']
     email = me.data['email']
     gender = me.data['gender']
 
     if not check_user(email):
         add_user(session['user_name'], email, gender) 
 
-#    return redirect(url_for('welcome'))
+    return redirect(url_for('%s'%request.args['next']))
     return 'Logged in as email=%s name=%s gender=%s, added to db =%s' %\
            (email, session['user_name'], gender, check_user(email))
 
@@ -84,9 +78,40 @@ def welcome():
     """ Welcome page after login, it is here for test """ 
     return session['user_name'] 
 
+def add_to_session(session_object):
+    db.session.add(session_object)
+    return db.session.commit()
+
+def check_user(email):
+    return True if User.query.filter_by(email = email).first() else False
+
+def add_user(user_name, email, gender):
+    user = User(user_name, email, gender)
+    add_to_session(user)
+
+def check_chatroom(name):
+    return True if ChatRoom.query.filter_by(name = name).first() else False
+
+def add_chatroom(name, user_id):
+    chatroom = ChatRoom(name, user_id)
+    return add_to_session(chatroom)
+
+def get_all_chatroom():
+    return db.session.query(ChatRoom).all()
+
 @app.route('/chatroom/register/', methods = ['POST', 'GET'])
 def register():
-    form = RegisterChatRoom(request.form)
-    if request.method == 'POST' and form.validate():
-        return render_template('register.html', form=form)
-    return render_template('register.html', form=form)
+    if get_user_name():
+        form = RegisterChatRoom(request.form)
+        if request.method == 'POST' and form.validate():
+            user = User.query.filter_by(username = session['user_name']).first()
+            chatroom_name = form.chatroom_name.data
+            if not check_chatroom(chatroom_name):
+                if add_chatroom(chatroom_name, user.id):
+                    flash(chatroom_name + "added ")
+                    return render_template('register.html', form=form, \
+                                        chatrooms=get_all_chatroom())
+        return render_template('register.html', form=form, \
+                                      chatrooms=get_all_chatroom())
+    else:
+        return redirect(url_for('login?next=register'))

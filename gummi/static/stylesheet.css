@@ -97,13 +97,13 @@ p
 .new_chatroom
 {
     position:relative;
-    width: 440px;
+    width: 960px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 0px;
     margin-bottom: 70px;
     padding: 25px;
-    min-height: 250px;
+    min-height: 150px;
     height: 100%;
     background: #f9f488;
     color: #666;
@@ -175,4 +175,39 @@ input.textbox
     outline: 0;
     vertical-align: baseline;
     font-size:16px;
+}
+.list_chatroom
+{
+    width:960px;
+    text-align: center;
+}
+.center-align
+{
+    text-align: center;
+}
+table
+{
+    border-top: 1px solid #e5eff8;
+    border-right: 1px solid #e5eff8;
+    margin: 1em auto;
+    border-collapse: collapse;
+    text-align: center
+    width: 70%;
+    margin-left:15%;
+    margin-right: 15%;
+}
+td, thead
+{
+    color: #232323;
+    border-bottom: 1px solid #e5eff8;
+    border-left:1px solid #e5eff8;
+    padding: .3em 1em;
+    text-align: center;
+    font-size: 20px;}
+
+tr.head
+{
+    font-weight: bold;
+    font-size: 28px;
+    color: #232323; 
 }
