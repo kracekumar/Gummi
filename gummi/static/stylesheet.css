@@ -1,3 +1,11 @@
+html
+{
+   background: url(bglines.png); 
+}
+.content
+{
+    border: 8px solid white;
+}
 ul.menu{
     font-family: arial, sans-serif;
     font-size: 100%;
@@ -97,7 +105,6 @@ p
 .new_chatroom
 {
     position:relative;
-    width: 960px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 0px;
@@ -105,9 +112,9 @@ p
     padding: 25px;
     min-height: 150px;
     height: 100%;
-    background: #f9f488;
     color: #666;
     position: relative;
+    background: #9dc425;
     -webkit-box-shadow:0 4px 10px rgba(0, 0, 0, 0 3);
     -moz-box-shadow:0 4px 10px rgba(0, 0, 0, 0 3);
     -ms-box-shadow: 0 4px 10px rgba(0, 0, 0 3);
@@ -117,7 +124,7 @@ p
 }
 input.textbox
 {
-   font-size: 18px;
+   font-size: 20px;
    border: 1px solid #cbbe79;
    background-color: white;
    color: #444;
@@ -125,7 +132,13 @@ input.textbox
    vertical-align: middle;
    margin: 0;
    width: 425px;
-   height: 26px;
+   height: 50px;
+   padding: 10px 10px 10px 45px;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+   width: 100%;
+
 }
 .button
 {
@@ -192,7 +205,6 @@ table
     margin: 1em auto;
     border-collapse: collapse;
     text-align: center
-    width: 70%;
     margin-left:15%;
     margin-right: 15%;
 }
@@ -210,16 +222,53 @@ tr.head
     font-weight: bold;
     font-size: 28px;
     color: #232323; 
+    background: #f3a01e;
+}
+tr
+{
+    background: #9dc425;
+    font-size: 30px;
 }
 p.message
 {
     font-weight: bold;
     font-size: 16px;
-    text-align: 1.3em;
+    text-align: left ;
     font-family: monospace;
+    padding: 15px;
+    -webkit-border-radius: 6px;
+    border-radius: 15px;
+    border-top: 1px solid #CCC;
+    z-index: 2;
+    margin: 0 3px 0 0;
+    background: #e8e8e8; 
+    display: block;
+    list-style: none;
+    color: #333;
+    
 }
 img
 {
     height: 25px;
     width: 25px;
     }
+
+.label_username
+{
+    background: #0064cd;
+    color: white;
+}
+.label_time
+{
+    text-align: right;
+    color: black;
+}
+body
+{
+    text-align:center;
+    position:relative;
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}

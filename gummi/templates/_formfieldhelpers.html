@@ -13,9 +13,9 @@
             {% if col %}
                 {% autoescape true %}
                 <td> {{  col.name  }} </td>
-                <td> {{ col.user.username }} </td>
-                <td> {{ col.created_datetime }} </td>
-                <td> <a href="/chatroom/{{ col.name }}" target="_blank"> Join 
+                <td> {{ col.creator }} </td>
+                <td> {{ col.created_at}} </td>
+                <td> <a href="/chatroom/{{ col.name }}/" target="_blank"> Join 
                 </a> </td>
                 {% endautoescape %}
             {% endif %}

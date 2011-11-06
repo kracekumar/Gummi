@@ -20,7 +20,7 @@
   jQuery.mbEmoticons= {
     author:"Matteo Bicocchi",
     version:"1.0",
-    smilesPath:"../static/",
+    smilesPath:"../../static/",
     smiles: {
       "(angel)":      "angel",
       " :@":          "angry",

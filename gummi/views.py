@@ -1,8 +1,11 @@
 from gummi import app
 from flask import render_template, request, redirect, url_for, session, flash
+from flask import Markup, jsonify
 from flaskext.oauth import OAuth
 from forms import RegisterChatRoom
 from database import User, ChatRoom, ChatMessage, db
+from redis_helper import add_user, check_username, add_chatroom,\
+                         get_all_chatroom, check_chatroom, store_message
 
 FACEBOOK_APP_ID = "111665765610828"
 FACEBOOK_APP_SECRET = "bb3f445f1a832bd24ba0a9bf2a0f5d63"
@@ -27,24 +30,44 @@ def get_user_name():
 def index():
     return render_template('index.html', user_name = get_user_name())
 
-@app.route('/chat/', methods = ["POST", "GET"])
-def chat():
-    return render_template('chat.html')
+@app.route('/chatroom/<channel>/send/', methods = ["POST", "GET"])
+def send(channel, username = None, message = None):
+    if message and channel:
+        return jsonify(message=message, username=username)
+    
+
+@app.route('/chatroom/<name>/publish/', methods = ["POST", "GET"])
+def publish(name):
+    if request.method == "GET":
+        channel_to = Markup(request.args.get('channel',  type=str))
+        message = Markup(request.args.get('message',  type=str))
+        username = Markup(request.args.get('user', type=str))
+        print channel_to, message
+        store_message(channel_to, message)
+        send(channel_to, username, message)
+        return render_template('success.html')
+    
+
+     
 
 @app.route('/chatroom/<name>/', methods = ['POST', 'GET'])
 def chatroom(name):
     """ Actual chat room handling function but not complete """
     if get_user_name():
-        return render_template('chatroom.html')
+        if check_chatroom(name):
+            return render_template('chat.html', \
+                                        room=name,username=session['user_name'])
+        else:
+            return redirect(url_for('register'), username=session['user_name'])
     else:
-        session['redirect_url'] = request.url
+        session['next'] = url_for('chatroom', name=name)
         return redirect(url_for('login'))
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     """ Facebook Login"""
     return facebook.authorize(callback=url_for('facebook_authorized',
-           next=None or request.args['next'],
+           next=None or  session['next'],
            _external=True))
 
 
@@ -62,56 +85,33 @@ def facebook_authorized(resp):
     email = me.data['email']
     gender = me.data['gender']
 
-    if not check_user(email):
-        add_user(session['user_name'], email, gender) 
+    if not check_username(session['user_name']):
+        add_user(session['user_name']) 
+    
+    if session['next']:
+       return redirect(session['next'])
 
-    return redirect(url_for('%s'%request.args['next']))
-    return 'Logged in as email=%s name=%s gender=%s, added to db =%s' %\
-           (email, session['user_name'], gender, check_user(email))
+    return redirect( url_for('register'))
 
 @facebook.tokengetter
 def get_facebook_oauth_token():
     return session.get('oauth_token')
 
-@app.route('/login/welcome/')
-def welcome():
-    """ Welcome page after login, it is here for test """ 
-    return session['user_name'] 
-
-def add_to_session(session_object):
-    db.session.add(session_object)
-    return db.session.commit()
-
-def check_user(email):
-    return True if User.query.filter_by(email = email).first() else False
-
-def add_user(user_name, email, gender):
-    user = User(user_name, email, gender)
-    add_to_session(user)
-
-def check_chatroom(name):
-    return True if ChatRoom.query.filter_by(name = name).first() else False
-
-def add_chatroom(name, user_id):
-    chatroom = ChatRoom(name, user_id)
-    return add_to_session(chatroom)
-
-def get_all_chatroom():
-    return db.session.query(ChatRoom).all()
 
 @app.route('/chatroom/register/', methods = ['POST', 'GET'])
 def register():
     if get_user_name():
         form = RegisterChatRoom(request.form)
         if request.method == 'POST' and form.validate():
-            user = User.query.filter_by(username = session['user_name']).first()
             chatroom_name = form.chatroom_name.data
             if not check_chatroom(chatroom_name):
-                if add_chatroom(chatroom_name, user.id):
-                    flash(chatroom_name + "added ")
+                if add_chatroom(chatroom_name, session['user_name']):
+                    flash(chatroom_name + " successfully added ")
                     return render_template('register.html', form=form, \
-                                        chatrooms=get_all_chatroom())
+                        chatrooms=get_all_chatroom(), username=get_user_name())
+
         return render_template('register.html', form=form, \
-                                      chatrooms=get_all_chatroom())
+                        chatrooms=get_all_chatroom(), username=get_user_name())
     else:
-        return redirect(url_for('login?next=register'))
+        session['next'] = url_for('register')
+        return redirect(url_for('login'))

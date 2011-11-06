@@ -1,11 +1,6 @@
 {% extends "layout.html" %}
 {% block menu %}
-    <ul class="pills">
-        <li><a href="index.html">Home</a></li>
-        <li class="active"><a href="chat.html">Home</a></li>
-        <li><a href="login.html">Login</a></li>
-
-    </ul>
+    {% include 'chatroom.html' %}
 {% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='form/jquery.form.js') }}"
@@ -16,28 +11,61 @@
 <script src="{{ url_for('static', filename='jquery.mb.emoticons.js') }}"
 type="text/javascript">
 </script>
-<script>
-function process_text(text)
+<script type="text/javascript">
+function process_text()
 {
-            $('aside.chat_content').append("<p class=message>" + text + "</p>");
-            $('form#chat_message').clearForm();
+
+            $('aside.chat_content').append("<br><p class='message'></p>");
+           var username =  $('.username').val() + ":" ;
+           var username_html = "<span class='label_username'>" + username + 
+                              "</span>";
+           var now = new Date();
+           var current_time = "<div class='label_time'>" + now.getHours() + ":"
+                        + now.getMinutes()+ ":" + now.getSeconds() + "</div>";
+           var chat_text = $("textarea.message").val();
+
+           $('p.message').last().html(username_html + chat_text)
+           .emoticonize(true).show();
+           $('p.message').last().append(current_time);
+           var content = "<p class='message'>" + username_html + chat_text +
+                         current_time + "</p>";
+           var room = $('.room').val();
+           var request_number = $.get(document.URL + "publish/",
+                                        {
+                                                user: username,
+                                                message: content,
+                                                channel: room
+                                            }
+                                            
+                                            );
+                                                    
+
+           $('form#chat_message').clearForm();
     
 }
 function t(e)
 {
-            var value = $("textarea.message").val();
-            process_text(value);
+            var value = $('').html($("textarea.message").val()).emoticonize(true).show();
+            process_text();
 }
     $(document).ready(function t(e){
         $('form#chat_message').ajaxForm(function() {
-            var value = $("textarea.message").val();
-            process_text(value);
+            process_text();
             });
             });
+           var room = $('.room').val();
+           $.get(document.URL + "send/",function(data){
+                                                        if(data.username == $('.username').val())
+                                                        {
+                                                           $('p.message').append(data.message);
+                                                        }
+                                                        });
+
 </script>
+
 {% endblock %}
 <section class="chat">
-{% block heaer %}
+{% block header %}
     <h3 class="header">You are Chatting With 
    {% if members %}
         {% for member in members %}
@@ -47,39 +75,120 @@ function t(e)
         None.
     {% endif %}
     </h3>
+<p class="text" id ="room">Chat Room: {{room}}</p>
 {% endblock %}
 
 {% block content %}
 <section class="content">
     <aside class="chat_content">
         welcome
+        <p class="message">
+           <code> 
+    smiles: {
+      "(angel)":      "angel",
+      " :@":          "angry",
+      "(bandit)":     "bandit",
+      "(bear)":       "bear",
+      "(beer)":       "beer",
+      " :D":          "bigsmile",
+      "(bow)":        "bow",
+      "(u)":          "brokenheart",
+      "(bug)":        "bug",
+      "(^)":          "cake",
+      "(call)":       "call",
+      "(cash)":       "cash",
+      "(clap)":       "clapping",
+      "(coffee)":     "coffee",
+      " 8-)":         "cool",
+      " ;(":          "crying",
+      "(dance)":      "dance",
+      "(devil)":      "devil",
+      "(doh)":        "doh",
+      "(drink)":      "drink",
+      "(drunk)":      "drunk",
+      "(dull)":       "dull",
+      "(blush)":      "eblush",
+      "(emo)":        "emo",
+      "(envy)":       "envy",
+      " ]:)":         "evilgrin",
+      "(F)":          "flower",
+      "(fubar)":      "fubar",
+      "(giggle)":     "giggle",
+      "(handshake)":  "handshake",
+      "(happy)":      "happy",
+      "(headbang)":   "headbang",
+      "(heart)":      "heart",
+      "(heidy)":      "heidy",
+      "(hi)":         "hi",
+      "(inlove)":     "inlove",
+      "(wasntme)":    "itwasntme",
+      "(kiss)":       "kiss",
+      " :x":          "lipssealed",
+      "(mail)":       "mail",
+      "(makeup)":     "makeup",
+      "(finger)":     "middlefinger",
+      "(mmm)":        "mmm",
+      "(mooning)":    "mooning",
+      "(~)":          "movie",
+      "(muscle)":     "muscle",
+      "(music)":      "music",
+      "(myspace)":    "myspace",
+      " 8-|":         "nerd",
+      "(ninja)":      "ninja",
+      "(no)":         "no",
+      "(nod)":        "nod",
+      "(party)":      "party",
+      "(phone)":      "phone",
+      "(pizza)":      "pizza",
+      "(poolparty)":  "poolparty",
+      "(puke)":       "puke",
+      "(punch)":      "punch",
+      "(rain)":       "rain",
+      "(rock)":       "rock",
+      "(rofl)":       "rofl",
+      " :(":          "sadsmile",
+      "(shake)":      "shake",
+      "(skype)":      "skype",
+      " |-)":         "sleepy",
+      "(smile)":      "smile",
+      "(smirk)":      "smirk",
+      "(smoke)":      "smoke",
+      " :|":          "speechless",
+      "(*)":          "star",
+      "(sun)":        "sun",
+      " :O":          "surprised",
+      "(swear)":      "swear",
+      "(sweat)":   "sweating",
+      "(talk)":       "talking",
+      "(think)":      "thinking",
+      "(o)":          "time",
+      "(tmi)":        "tmi",
+      "(toivo)":      "toivo",
+      " :P":          "tongueout",
+      "(wait)":       "wait",
+      "(whew)":       "whew",
+      "(wink)":       "wink",
+      " :^)":         "wondering",
+      " :S":          "worried",
+      "(yawn)":       "yawn",
+      }
+      </code>
+            <hr>
+            <br/>
+        </p>
     </aside>
 </section>
 <section>
     <article class="message">
         <form method="post" action="" id="chat_message">
-            <textarea name="message" class ="message" onenter="t(e)" > 
+            <input type="hidden" class="username" value="{{ username }}"> </input>
+            <input type="hidden" class="room" value="{{ room }}"></input>
+      <p class="text"> Message: </p>
+      <textarea name="message" class ="message" 
+                                     onenter="t(e )" > 
             </textarea>
         </form>
     </article>
-    <article>
-    <aside class="logged_in_users">
-        <h2> Logged In Users </h2>
-        {% if logged_users %}
-        {% else %}
-            </h3>None</h3>
-        {% endif %}
-
-    </aside>
-    <aside class="current_chat_members">
-        <h2> Currently Chatting </h2>
-        {% if current_chat_members %}
-        {% else %}
-           <h3>None</h3>
-        {% endif %}
-    </aside>
-    </article>
-
 </section>
 </section>
 {% endblock %}
