@@ -39,10 +39,16 @@ def send(channel, username = None , message = None):
         channel = Markup(request.args.get('channel', type=str))
         messages, usernames = fetch_message(channel, username)
         print jsonify(messages=messages)
-        return jsonify(messages=messages, usernames=usernames)
+        if messages:
+            return jsonify(messages=messages, usernames=usernames, success=1)
+        else:
+            return jsonify(messages='false', usernames='false', success=0)
     else:
-        message, usernames = fetch_message(channel, username)
-        return jsonify(messages=messages, usernames=usernames)
+        message, usernames = fetch_message(channel, username, success=1)
+        if messages:
+            return jsonify(messages=messages, usernames=usernames, success=0)
+        else:
+            return jsonify(messages='false', usernames='false')
     
 
 @app.route('/chatroom/<name>/publish/', methods = ["POST", "GET"])

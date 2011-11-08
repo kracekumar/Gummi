@@ -58,18 +58,25 @@ function t(e)
     {
            var room = $('.room').val();
            var username =  $('.username').val();
-           var room = $('.room').val();
+       var room = $('.room').val();
            $.getJSON(document.URL.split("#")[0]+ "send/",{
                                                             username: username,
                                                             channel: room
-                                                         },
-                                                        function(data){
-                                                        if(data.username == $('.username').val())
-                                                        {
-                                                           alert(data.username);
-                                                           $('aside.chat_content').append(data.message);
-                                                        }
-                                                        });
+                                                         }, 
+       function(data)
+       {
+           if(data.usernames.success == 1)
+           {
+               for(var index = 0; index < data.usernames.length; ++index)
+               {   
+                   if(data.usernames[index] != username)
+                   {
+                        $("aside.chat_content").append(data.usernames.length+data.messages[index]);
+                   }
+                }
+            }
+        }
+        );
     }
     setInterval("update()", 1000);
 
