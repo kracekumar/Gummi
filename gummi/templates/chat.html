@@ -30,7 +30,8 @@ function process_text()
            var content = "<p class='message'>" + username_html + chat_text +
                          current_time + "</p>";
            var room = $('.room').val();
-           var request_number = $.get(document.URL + "publish/",
+           var username =  $('.username').val();
+           var request_number = $.get(document.URL.split('#')[0] + "publish/",
                                         {
                                                 user: username,
                                                 message: content,
@@ -53,13 +54,24 @@ function t(e)
             process_text();
             });
             });
+    function update()
+    {
            var room = $('.room').val();
-           $.get(document.URL + "send/",function(data){
+           var username =  $('.username').val();
+           var room = $('.room').val();
+           $.getJSON(document.URL.split("#")[0]+ "send/",{
+                                                            username: username,
+                                                            channel: room
+                                                         },
+                                                        function(data){
                                                         if(data.username == $('.username').val())
                                                         {
-                                                           $('p.message').append(data.message);
+                                                           alert(data.username);
+                                                           $('aside.chat_content').append(data.message);
                                                         }
                                                         });
+    }
+    setInterval("update()", 1000);
 
 </script>
 

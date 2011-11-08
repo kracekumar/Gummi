@@ -5,7 +5,8 @@ from flaskext.oauth import OAuth
 from forms import RegisterChatRoom
 from database import User, ChatRoom, ChatMessage, db
 from redis_helper import add_user, check_username, add_chatroom,\
-                         get_all_chatroom, check_chatroom, store_message
+                         get_all_chatroom, check_chatroom, store_message,\
+                         fetch_message
 
 FACEBOOK_APP_ID = "111665765610828"
 FACEBOOK_APP_SECRET = "bb3f445f1a832bd24ba0a9bf2a0f5d63"
@@ -31,9 +32,17 @@ def index():
     return render_template('index.html', user_name = get_user_name())
 
 @app.route('/chatroom/<channel>/send/', methods = ["POST", "GET"])
-def send(channel, username = None, message = None):
-    if message and channel:
-        return jsonify(message=message, username=username)
+def send(channel, username = None , message = None):
+    if request.method == "GET":
+#        print message, channel
+        username = Markup(request.args.get('username', type=str))
+        channel = Markup(request.args.get('channel', type=str))
+        messages, usernames = fetch_message(channel, username)
+        print jsonify(messages=messages)
+        return jsonify(messages=messages, usernames=usernames)
+    else:
+        message, usernames = fetch_message(channel, username)
+        return jsonify(messages=messages, usernames=usernames)
     
 
 @app.route('/chatroom/<name>/publish/', methods = ["POST", "GET"])
@@ -42,8 +51,7 @@ def publish(name):
         channel_to = Markup(request.args.get('channel',  type=str))
         message = Markup(request.args.get('message',  type=str))
         username = Markup(request.args.get('user', type=str))
-        print channel_to, message
-        store_message(channel_to, message)
+        store_message(channel_to, message, username)
         send(channel_to, username, message)
         return render_template('success.html')
     
