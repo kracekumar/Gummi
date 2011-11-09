@@ -65,13 +65,16 @@ function t(e)
                                                          }, 
        function(data)
        {
-           if(data.usernames.success == 1)
+           if(data.success == 1)
            {
                for(var index = 0; index < data.usernames.length; ++index)
                {   
+                    alert(data.usernames[index]);
                    if(data.usernames[index] != username)
                    {
-                        $("aside.chat_content").append(data.usernames.length+data.messages[index]);
+                       $('aside.chat_content').append("<br><p class='message'></p>");
+                        $('p.message').last().html(data.messages[index])
+                       .emoticonize(true).show();
                    }
                 }
             }

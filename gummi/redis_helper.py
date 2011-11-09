@@ -30,6 +30,8 @@ def build_chatroom_message_user_counter(chatroom, username):
     """
     return ":".join([CHATROOM, chatroom, username, COUNTER])
    
+def get_counter_value(key):
+    return redis_connection.get(key)
 
 def store_message(chatroom, message, username):
     """
@@ -43,27 +45,33 @@ def store_message(chatroom, message, username):
     """ 
 
     temp = redis_connection.pipeline()
-    position = int(temp.rpush(build_chatroom_message_name(chatroom) ,message))
+    temp.rpush(build_chatroom_message_name(chatroom) ,message)
     temp.rpush(build_chatroom_userlist(chatroom), username)
-    temp.setnx(build_chatroom_message_user_counter(chatroom, username), \
-               position - 1)
-    return temp.execute()
+    if temp.execute():
+        name = build_chatroom_message_user_counter(chatroom, username)
+        counter = get_counter_value(name)
+        if counter:
+            return redis_connection.set(name, int(counter))
+        else:
+            return redis_connection.setnx(name, 0)
+    return False
 
 def fetch_message(chatroom, username):
-    """Retrieve all messages from chatroom that doesn't belong to the user.
+    """Retrieve all messages from chatroom from last retrieved message.
 
        :param chatroom: name of the chatroom
        :param username: current user 
     """
     chatroom_full_name = build_chatroom_message_name(chatroom)
     total_messages = redis_connection.llen(chatroom_full_name)
-    counter_full_name = build_chatroom_message_user_counter(chatroom,)
+    counter_full_name = build_chatroom_message_user_counter(chatroom, username)
     counter = int(redis_connection.get(counter_full_name))
     userlist_full = build_chatroom_userlist(chatroom)
     messages = []
     usernames = []
-    if counter < total_messages - 1:
-        for x in xrange(counter, total_messages):
+    if counter < total_messages :
+        for x in xrange(counter + 1, total_messages):
+            #counter always holds last accessed index, so it is incremented
             username_from_redis = redis_connection.lindex(userlist_full, x)
             if username_from_redis != username:
                 messages.append(redis_connection.lindex(chatroom_full_name, x))

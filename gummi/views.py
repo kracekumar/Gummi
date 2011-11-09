@@ -34,21 +34,19 @@ def index():
 @app.route('/chatroom/<channel>/send/', methods = ["POST", "GET"])
 def send(channel, username = None , message = None):
     if request.method == "GET":
-#        print message, channel
-        username = Markup(request.args.get('username', type=str))
+        username = session['user_name']
         channel = Markup(request.args.get('channel', type=str))
         messages, usernames = fetch_message(channel, username)
-        print jsonify(messages=messages)
         if messages:
             return jsonify(messages=messages, usernames=usernames, success=1)
         else:
             return jsonify(messages='false', usernames='false', success=0)
     else:
-        message, usernames = fetch_message(channel, username, success=1)
+        message, usernames = fetch_message(channel, username)
         if messages:
-            return jsonify(messages=messages, usernames=usernames, success=0)
+            return jsonify(messages=messages, usernames=usernames, success=1)
         else:
-            return jsonify(messages='false', usernames='false')
+            return jsonify(messages='false', usernames='false', success=0)
     
 
 @app.route('/chatroom/<name>/publish/', methods = ["POST", "GET"])
@@ -56,7 +54,7 @@ def publish(name):
     if request.method == "GET":
         channel_to = Markup(request.args.get('channel',  type=str))
         message = Markup(request.args.get('message',  type=str))
-        username = Markup(request.args.get('user', type=str))
+        username = session['user_name']
         store_message(channel_to, message, username)
         send(channel_to, username, message)
         return render_template('success.html')
