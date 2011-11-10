@@ -272,3 +272,8 @@ body
     margin-right: auto;
     padding: 20px;
 }
+img.login
+{
+    height: 100px;
+    width: 250px;
+}

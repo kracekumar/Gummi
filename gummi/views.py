@@ -78,8 +78,10 @@ def chatroom(name):
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     """ Facebook Login"""
+    if not 'next' in session:
+        session['next'] = url_for('register')
     return facebook.authorize(callback=url_for('facebook_authorized',
-           next=None or  session['next'],
+           next= session['next'],
            _external=True))
 
 
@@ -127,3 +129,11 @@ def register():
     else:
         session['next'] = url_for('register')
         return redirect(url_for('login'))
+
+@app.route('/logout/')
+def logout():
+     if 'next' in session:
+         session['next'] = None
+     if 'user_name' in session:
+         session['user_name'] = None
+     return redirect(url_for('index'))

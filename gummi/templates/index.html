@@ -2,18 +2,16 @@
 {% block menu %}
      {% if  user_name is sameas None %}
         <p class="text"> 
-        <br/><br/><br/><br/><br/> Welcome to Gummi - A Multi User Chat Client
-        <img src = "{{ url_for('static', 'facebook-login-button.png') }}">
-        </p>
+        <br/><br/><br/><br/><br/> Welcome to Gummi - A Multi User Chat Client<br/></p>
+        <a href="{{url_for('login')}}">
+        <img class="login" src = "{{ url_for('static', filename='facebook-login-button.png') }}" height=250 width=250>
+        </a>
+        
 
      {% else %}
-        <p class="text"> Welcome to Gummi - A mutli User Chat Client.<br/>
-        <a href="{{ url_for('login') }}">
-        <img src = "{{ url_for('static', filename='facebook-login-button.png') }}"
-       width = 400 ></a>
+        {% include 'menu.html' %}
        
        </p>
-        {% include 'menu.html' %}
      {% endif %}
 {% endblock %}
 

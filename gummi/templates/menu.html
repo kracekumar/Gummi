@@ -1,11 +1,11 @@
 {% block menu %}
     <ul class="menu">
-        <li class="menu_item"><a class="menu" href="index.html">Home</a></li>
+        <li class="menu_item"><a class="menu" href="{{ url_for('login') }}">Home</a></li>
         <li class="menu_item"><a class="menu" href="{{ url_for('register') }}">
         Chat Room
         </a></li>
-        <li class="menu_item"><a class="menu" href="logout.html">Log Out</a></li>
-        <li class="menu_item"><a class="menu" href="profile.html">{{ username }}
+        <li class="menu_item"><a class="menu" href="{{ url_for('logout') }}">Log Out</a></li>
+        <li class="menu_item"><a class="menu" href="#">{{ username }}
         </a></li>
     </ul>
 {% endblock %}
