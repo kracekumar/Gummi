@@ -140,3 +140,11 @@ def logout():
      if 'user_name' in session:
          session['user_name'] = None
      return redirect(url_for('index'))
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return 'Sorry something went wrong, we will be back in few minutes.', 500
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return 'Page you requested doesnt exist. Did you try to hack ? '
