@@ -29,7 +29,10 @@ def get_user_name():
 
 @app.route('/')
 def index():
-    return render_template('index.html', user_name = get_user_name())
+    ip_addr = request.remote_addr
+    browser = dict(request.headers.items())
+    return render_template('index.html', user_name = get_user_name()\
+                           ,ip=ip_addr,browser=browser['User-Agent'] )
 
 @app.route('/chatroom/<channel>/send/', methods = ["POST", "GET"])
 def send(channel, username = None , message = None):

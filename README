@@ -1,1 +1,8 @@
-Under Construction
+GUMMI
+  A small chat application written in Flask + redis. It is written to learn flask + jinja 2 + redis.
+
+Installation:
+you need redis. You can download redis from redis.io. Start the redis server.
+Run pip install -r requirements.
+
+

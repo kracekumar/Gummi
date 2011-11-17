@@ -69,7 +69,6 @@ function t(e)
            {
                for(var index = 0; index < data.usernames.length; ++index)
                {   
-                    alert(data.usernames[index]);
                    if(data.usernames[index] != username)
                    {
                        $('aside.chat_content').append("<br><p class='message'></p>");
@@ -88,7 +87,7 @@ function t(e)
 {% endblock %}
 <section class="chat">
 {% block header %}
-    <h3 class="header">You are Chatting With 
+<!--    <h3 class="header">You are Chatting With 
    {% if members %}
         {% for member in members %}
             {{ member }}
@@ -96,7 +95,7 @@ function t(e)
     {% else %}
         None.
     {% endif %}
-    </h3>
+    </h3>-->
 <p class="text" id ="room">Chat Room: {{room}}</p>
 {% endblock %}
 
